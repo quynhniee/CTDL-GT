@@ -43,3 +43,5 @@ int main () {
     }
     return 0;
 }
+
+// hoặc khởi tạo xâu nhị phân bé nhất có k bit 1 rồi sinh hoán vị
