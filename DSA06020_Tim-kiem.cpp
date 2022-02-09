@@ -13,26 +13,13 @@ typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
 vector<int> a;
-int n, cou;
-
-void init () {
-    cin >> n;
+int n, x;
+void test () {
+    cin >> n >> x;
     a.resize(n);
     for (auto &i : a)   cin >> i;
-    cou = 0;
-}
-void solve () {
-    for (int i = 0; i < n-1; i++) {
-        int pos = i;
-        for (int j = i + 1; j < n; j++) 
-            if (a[pos] > a[j])
-                    pos = j;
-        if (pos != i)   {
-            swap(a[i], a[pos]);
-            ++cou;
-        }
-    }
-    cout << cou << endl;
+    (binary_search(a.begin(), a.end(), x)) ? cout << "1\n" : cout << "-1\n";
+    a.clear();
 }
 int main () {
     ios_base::sync_with_stdio(0);
@@ -40,9 +27,7 @@ int main () {
     cout.tie(NULL);
     int t;
     cin >> t;
-    while (t--) {
-        init ();
-        solve();
-    }
+    while (t--) 
+        test ();
     return 0;
 }

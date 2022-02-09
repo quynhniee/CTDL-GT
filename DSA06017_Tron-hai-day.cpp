@@ -12,27 +12,17 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-vector<int> a;
-int n, cou;
 
-void init () {
-    cin >> n;
-    a.resize(n);
+int n, m;
+vector <int> a;
+void test () {
+    cin >> n >> m;
+    a.resize(n + m);
     for (auto &i : a)   cin >> i;
-    cou = 0;
-}
-void solve () {
-    for (int i = 0; i < n-1; i++) {
-        int pos = i;
-        for (int j = i + 1; j < n; j++) 
-            if (a[pos] > a[j])
-                    pos = j;
-        if (pos != i)   {
-            swap(a[i], a[pos]);
-            ++cou;
-        }
-    }
-    cout << cou << endl;
+    sort (a.begin(), a.end());
+    for (auto i : a)    cout << i << " ";
+    cout << endl;
+    a.clear();
 }
 int main () {
     ios_base::sync_with_stdio(0);
@@ -40,9 +30,7 @@ int main () {
     cout.tie(NULL);
     int t;
     cin >> t;
-    while (t--) {
-        init ();
-        solve();
-    }
+    while (t--) 
+        test();
     return 0;
 }
