@@ -17,12 +17,14 @@ int n, s;
 vector<int> a;
 bool stop;
 void backtracking (int i, int sum) {
+    if (stop)   return;
     if (sum == s)   {
         stop = true;
         return;
     }
     else if (sum < s && i < n) {
-        backtracking(i+1, sum + a[i]);
+        if (sum + a[i] <= s)
+            backtracking(i+1, sum + a[i]);
         backtracking(i+1, sum);
     }
 }

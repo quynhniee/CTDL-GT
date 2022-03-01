@@ -13,31 +13,32 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-ll n, k, cou;
-vector<int> a;
+vector<int> c, a;
+int n, k;
+void output () {
+    for (auto i:c)  cout << i << " ";
+    cout << endl;
+}
+void backtracking (int i) {
+    FOR (j, i, n-1) {
+        c.push_back(a[j]);
+        if (c.size() == k) output();
+        else if (c.size() < k) backtracking(j+1);
+        c.pop_back();
+    }
+}
 void test () {
-    cou = 1;
     cin >> n >> k;
     a.assign(n, 0);
-    FOR (i, 0, n-1) 
-        cin >> a[i];
-    while (!a.front())  a.erase(a.begin());
-    while (!a.back())   a.erase(a.end()-1);
-    int zeroes = 0;
-    FOR (i, 0, a.size()-1) {
-        if (a[i] == 0) ++zeroes;
-        else if (zeroes) {
-            cou *= (zeroes + 1);
-            zeroes = 0;
-        }   
-    }
-    cout << cou << endl;
+    for (auto &i:a) cin >> i;
+    sort(a.begin(), a.end());
+    backtracking(0);
 }
-
 int main () {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
     cout.tie(NULL);
-    test();
+    tester()
+        test();
     return 0;
 }
