@@ -3,27 +3,27 @@
 #include <math.h>
 #include <climits>
 #include <vector>
-#include <map>
 #include <algorithm>
 #include <iomanip>
 #include <utility>
-#include <list>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
+#define tester()    int t; cin >> t; while (t--)
 using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-int n;
+string a, b;
+
 void test () {
-    cin >> n;
-    int index;
-    map<int, int> a;
-    while (n--) {
-        cin >> index;
-        a[index]++;
-        if (a[index] == 1)  cout << index << " ";
-    }
+    cin >> a >> b;
+    replace(a.begin(), a.end(), '5', '6');
+    replace(b.begin(), b.end(), '5', '6');
+    ll Max = stoll(a) + stoll(b);
+    replace(a.begin(), a.end(), '6', '5');
+    replace(b.begin(), b.end(), '6', '5');
+    ll Min = stoll(a) + stoll(b);
+    cout << Min << " " << Max << endl;
 }
 int main () {
     ios_base::sync_with_stdio(0);

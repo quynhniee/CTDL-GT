@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <string>
 #include <math.h>
@@ -7,39 +6,32 @@
 #include <algorithm>
 #include <iomanip>
 #include <utility>
+#include <stack>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
+#define tester()    int t; cin >> t; while (t--)
 using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-vector<int> a;
-int n, k;
+stack<int> a;
+int n;
+string s;
 void input () {
-    cin >> n >> k;
-    a.resize(n);
-    for (auto &i:a) cin >> i;
-}
-int binarySearch (int val, int l, int r) {
-    if (l <= r) {
-        int mid = (l+r) / 2;
-        if (val == a[mid])  return mid+1;
-        else if (val < a[mid])  binarySearch(val, l, mid-1);
-        else    binarySearch(val, mid+1, r);
+    cin >> s;
+    if (s == "PUSH") {
+        cin >> n;
+        a.push(n);
     }
-    return -1;
+    else if (s == "POP" && !a.empty())    a.pop();
+    else if (s == "PRINT")  
+        a.empty() ? cout << "NONE\n" : cout << a.top() << endl;
 }
-
 int main () {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
     cout.tie(NULL);
-    int t;
-    cin >> t;
-    while (t--) {
+    tester() 
         input();
-        cout << binarySearch(k, 0, n-1) << endl;
-        a.clear();
-    }
     return 0;
 }

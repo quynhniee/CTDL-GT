@@ -3,32 +3,32 @@
 #include <math.h>
 #include <climits>
 #include <vector>
-#include <map>
 #include <algorithm>
 #include <iomanip>
 #include <utility>
-#include <list>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
+#define tester()    int t; cin >> t; while (t--)
 using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-int n;
+int n, k;
+vector<int> a, s;
 void test () {
-    cin >> n;
-    int index;
-    map<int, int> a;
-    while (n--) {
-        cin >> index;
-        a[index]++;
-        if (a[index] == 1)  cout << index << " ";
-    }
+    cin >> n >> k;
+    a.assign(n+1, 0);
+    s.assign(n+1, 0);
+    FOR (i, 1, n)   cin >> a[i];
+    sort(a.begin(), a.end());
+    FOR (i, 1, n) 
+        s[i] = s[i-1] + a[i];
+    cout << max(s[n] - 2*s[k], s[n] - 2*s[n-k]) << endl;
 }
 int main () {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
     cout.tie(NULL);
-    test();
+    tester()    test();
     return 0;
 }
