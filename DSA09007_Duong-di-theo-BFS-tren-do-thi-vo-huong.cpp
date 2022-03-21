@@ -5,7 +5,6 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
-#include <stack>
 #include <utility>
 #include <queue>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
@@ -15,42 +14,34 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
+int V, E, s, t, u, v;
 vector<vector<int> > a;
-vector<bool> vs;
-vector<int> mark;
-int V, E, s, t;
-void input () {
+vector<int> vs, mark;
+void init () {
     cin >> V >> E >> s >> t;
     a.resize(V+1);
-    int i, j;
-    FOR (k, 1, E) {
-        cin >> i >> j;
-        a[i].push_back(j);
+    FOR (i, 0, E-1) {
+        cin >> u >> v;
+        a[u].push_back(v);
+        a[v].push_back(u);
     }
 }
-void output (vector<int> &x) {
-    for (auto i:x)  cout << i << " ";
-    cout << endl;
-}
-void BFS (int start) {
+void BFS (int s) {
+    vs.assign(V+1, 0);
     mark.assign(V+1, -1);
-    vs.assign(V+1, false);
     queue<int> q;
-    q.push(start);
-    vs[start] = true;
+    q.push(s);
+    vs[s] = 1;
     while (!q.empty()) {
         int u = q.front();
         q.pop();
-        if (u == t) return;
-        if (!a[u].empty()) 
-        FOR (i, 0, a[u].size()-1) {
-            int v = a[u][i];
+        if (!a[u].empty())
+        for (auto v:a[u]) 
             if (!vs[v]) {
-                q.push(v);
-                vs[v] = true;
+                vs[v] = 1;
                 mark[v] = u;
+                q.push(v);
             }
-        }
     }
 }
 void trace () {
@@ -58,20 +49,18 @@ void trace () {
         cout << "-1\n";
         return;
     }
+    vector<int> step;
     int prevStep = t;
-    stack<int> step;
     while (prevStep != -1) {
-        step.push(prevStep);
+        step.push_back(prevStep);
         prevStep = mark[prevStep];
     }
-    while (!step.empty()) {
-        cout << step.top() << " ";
-        step.pop();
-    }
-    cout  << endl;
+    FORD (i, step.size()-1, 0)
+        cout << step[i] << " ";
+    cout << endl;
 }
 void test () {
-    input();
+    init();
     BFS(s);
     trace();
     a.clear();

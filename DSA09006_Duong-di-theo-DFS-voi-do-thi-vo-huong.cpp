@@ -5,9 +5,8 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
-#include <stack>
 #include <utility>
-#include <queue>
+#include <stack>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
 #define tester()    int t; cin >> t; while (t--)
@@ -15,40 +14,37 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
+int V, E, s, t, u, v;
 vector<vector<int> > a;
-vector<bool> vs;
-vector<int> mark;
-int V, E, s, t;
-void input () {
+vector<int> vs, mark;
+void init () {
     cin >> V >> E >> s >> t;
     a.resize(V+1);
-    int i, j;
-    FOR (k, 1, E) {
-        cin >> i >> j;
-        a[i].push_back(j);
+    FOR (i, 0, E-1) {
+        cin >> u >> v;
+        a[u].push_back(v);
+        a[v].push_back(u);
     }
 }
-void output (vector<int> &x) {
-    for (auto i:x)  cout << i << " ";
-    cout << endl;
-}
-void BFS (int start) {
+void DFS (int s) {
+    vs.assign(V+1, 0);
     mark.assign(V+1, -1);
-    vs.assign(V+1, false);
-    queue<int> q;
-    q.push(start);
-    vs[start] = true;
-    while (!q.empty()) {
-        int u = q.front();
-        q.pop();
+    stack<int> st;
+    st.push(s);
+    vs[s] = 1;
+    while (!st.empty()) {
+        int u = st.top();
+        st.pop();
         if (u == t) return;
-        if (!a[u].empty()) 
+        if (!a[u].empty())
         FOR (i, 0, a[u].size()-1) {
             int v = a[u][i];
             if (!vs[v]) {
-                q.push(v);
-                vs[v] = true;
+                st.push(u);
+                st.push(v);
+                vs[v] = 1;
                 mark[v] = u;
+                break;
             }
         }
     }
@@ -58,21 +54,19 @@ void trace () {
         cout << "-1\n";
         return;
     }
+    vector<int> step;
     int prevStep = t;
-    stack<int> step;
     while (prevStep != -1) {
-        step.push(prevStep);
+        step.push_back(prevStep);
         prevStep = mark[prevStep];
     }
-    while (!step.empty()) {
-        cout << step.top() << " ";
-        step.pop();
-    }
-    cout  << endl;
+    FORD (i, step.size()-1, 0)
+        cout << step[i] << " ";
+    cout << endl;
 }
 void test () {
-    input();
-    BFS(s);
+    init();
+    DFS(s);
     trace();
     a.clear();
 }
