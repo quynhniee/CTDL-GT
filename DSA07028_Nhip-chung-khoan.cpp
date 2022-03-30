@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <stack>
 #include <utility>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
@@ -13,28 +14,27 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-vector<ll> a;
 int n;
-void test() {
-	cin >> n;
+vector<int> a;
+void test () {
+    cin >> n;
     a.assign(n, 0);
-	for (ll &i : a) cin >> i;
-	ll sum = a[0], temp = a[0], ans = 1, pos = 0;
-	for (int i = 1; i < n; ++i) {
-		sum += a[i];
-		while(pos < i && sum / (i-pos+1) < temp) {
-			sum -= a[pos];
-			++pos;
-		}
-		ans = max(ans, i-pos+1);
-		temp = max(temp, sum/(i-pos+1));
-	}
-	cout << ans << endl;
+    for (auto &i:a) cin >> i;
+    stack<int> st;
+    vector<int> res;
+    FOR (i, 0, n-1) {
+        while (!st.empty() && a[i] >= a[st.top()]) 
+            st.pop();
+        st.empty() ? res.push_back(i+1) : res.push_back(i-st.top());
+        st.push(i);
+    }
+    for (auto i:res)    cout << i << " ";
+    cout << endl;
 }
 int main () {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
     cout.tie(NULL);
-    test();
+    tester()    test();
     return 0;
 }

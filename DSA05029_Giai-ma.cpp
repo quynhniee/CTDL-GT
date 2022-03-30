@@ -15,6 +15,7 @@ typedef double db;
 const long long mod = 1e9 + 7;
 string s;
 int to_int (char x, char y) {
+    if (x == '0')   return 1e6; // VD: 104 -> 10-4 (1 cách)
     return (x-'0')*10 + (y-'0');
 }
 void test () {
@@ -29,14 +30,14 @@ void test () {
     dp[0] = dp[1] = 1;
     FOR (i, 2, n) {
         if (s[i] == '0') {
-            if (s[i-1] > '2') {
+            if (s[i-1] > '2' || s[i-1] == '0') {  // VD: 100 -> invalid
                 cout << "0\n";
                 return;
             }
             dp[i] = dp[i-2];
         }
         else
-            dp[i] = to_int(s[i-1], s[i]) > 26 ? dp[i-1] : dp[i-1] + dp[i-2];
+            dp[i] = to_int(s[i-1], s[i]) <= 26 ? (dp[i-1] + dp[i-2]) : dp[i-1];
     }
     cout << dp[n] << endl;
 }

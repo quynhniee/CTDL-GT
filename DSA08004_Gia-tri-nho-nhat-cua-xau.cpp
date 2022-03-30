@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <queue>
 #include <utility>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
@@ -13,28 +14,33 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-vector<ll> a;
-int n;
-void test() {
-	cin >> n;
-    a.assign(n, 0);
-	for (ll &i : a) cin >> i;
-	ll sum = a[0], temp = a[0], ans = 1, pos = 0;
-	for (int i = 1; i < n; ++i) {
-		sum += a[i];
-		while(pos < i && sum / (i-pos+1) < temp) {
-			sum -= a[pos];
-			++pos;
-		}
-		ans = max(ans, i-pos+1);
-		temp = max(temp, sum/(i-pos+1));
-	}
-	cout << ans << endl;
+string s;
+ll k;
+void test () {
+    vector<ll> a (27, 0);
+    cin >> k >> s;
+    for (auto i:s)
+        a[i-'A']++;
+    priority_queue<ll> pq;
+    for (auto i:a)
+        if (i)  pq.push(i);
+    ll tmp;
+    while (k--) {
+        tmp = pq.top();
+        pq.pop();
+        pq.push(tmp-1);
+    }
+    ll res = 0;
+    while (!pq.empty()) {
+        tmp = pq.top(); pq.pop();
+        res += tmp * tmp;
+    }
+    cout << res << endl;
 }
 int main () {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
     cout.tie(NULL);
-    test();
+    tester()    test();
     return 0;
 }

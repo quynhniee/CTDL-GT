@@ -13,23 +13,20 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-vector<ll> a;
-int n;
-void test() {
-	cin >> n;
-    a.assign(n, 0);
-	for (ll &i : a) cin >> i;
-	ll sum = a[0], temp = a[0], ans = 1, pos = 0;
-	for (int i = 1; i < n; ++i) {
-		sum += a[i];
-		while(pos < i && sum / (i-pos+1) < temp) {
-			sum -= a[pos];
-			++pos;
-		}
-		ans = max(ans, i-pos+1);
-		temp = max(temp, sum/(i-pos+1));
-	}
-	cout << ans << endl;
+int a, b; 
+vector<ll> dp (1e7);
+void solution () {
+    for (int i = 1; i <= b; i++)
+        for (int j = i*2; j <= b; j += i)
+            dp[j] += i;
+}
+void test () {
+    cin >> a >> b;
+    solution();
+    ll cou = 0;
+    FOR (i, a, b)
+        if (dp[i] > i)  ++cou; 
+    cout << cou << endl;
 }
 int main () {
     ios_base::sync_with_stdio(0);
