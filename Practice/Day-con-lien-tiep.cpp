@@ -19,17 +19,13 @@ void test() {
 	cin >> n;
     a.assign(n, 0);
 	for (ll &i : a) cin >> i;
-	ll sum = a[0], temp = a[0], ans = 1, pos = 0;
-	for (int i = 1; i < n; ++i) {
-		sum += a[i];
-		while(pos < i && sum / (i-pos+1) < temp) {
-			sum -= a[pos];
-			++pos;
-		}
-		ans = max(ans, i-pos+1);
-		temp = max(temp, sum/(i-pos+1));
+	int res = 0, cou = 0;
+	ll max_val = *max_element(a.begin(), a.end());
+	FOR (i, 0, n-1){ 
+		a[i-1] == max_val && a[i] == max_val ? ++cou : cou = 1;
+		res = max (res, cou);
 	}
-	cout << ans << endl;
+	cout << res << endl;
 }
 int main () {
     ios_base::sync_with_stdio(0);

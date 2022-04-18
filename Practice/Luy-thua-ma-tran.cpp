@@ -40,10 +40,9 @@ void input () {
             cin >> j;
 }
 void output (matrix x) {
-    // tổng phần tử hàng cuối cùng
     ll sum = 0;
     FOR (i, 0, n-1)
-        sum = (sum + x[n-1][i]) % mod;
+        sum = (sum + x[0][i]) % mod;
     cout << sum << endl;
 }
 void test () {

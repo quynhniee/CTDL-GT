@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <queue>
 #include <utility>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
@@ -14,33 +15,28 @@ typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
 int n;
-vector<vector<int> > res;
-vector<int> temp;
-void backtracking (int i) {
-    FORD (j, i, 1) {
-        temp.push_back(j);
-        n -= j;
-        if (n == 0)
-            res.push_back(temp);
-        else if (n > 0)    backtracking(j);
-        temp.pop_back();
-        n += j;
-    }
-}
+vector<string> res;
 void output () {
     cout << res.size() << endl;
-    for (auto i:res) {
-        cout << "(";
-        if (i.size() > 1)
-            FOR (j, 0, i.size()-2)  cout << i[j] << " ";
-        cout << i.back() << ") ";
-    }
+    for (auto i:res)    cout << i << " ";
     cout << endl;
+    res.clear();
+}
+void solution () {
+    cin >> n;
+    queue<string> q;
+    q.push("6"), q.push("8");
+    string temp = q.front();
+    while (temp.size() <= n) {
+        if (temp.size() == n)
+            res.push_back(temp);
+        q.push(temp + "6");
+        q.push(temp + "8");
+        q.pop(), temp = q.front();
+    }
 }
 void test () {
-    cin >> n;
-    res.clear(); temp.clear();
-    backtracking(n);
+    solution();
     output();
 }
 int main () {

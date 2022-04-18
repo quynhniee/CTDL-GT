@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <cstring>
 #include <utility>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
@@ -13,25 +14,25 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-int a, b; 
-vector<ll> dp (1e6 + 5, 0);
-void sieve () {
-    for (int i = 1; i <= 1e6; i++)
-        for (int j = i*2; j <= 1e6; j += i)
-            dp[j] += i;
+int dp[105][105][105];
+int n, m, p;
+string s1, s2, s3;
+void dynamicProgram () {
+    memset(dp, 0, sizeof(dp));
+    FOR (i, 1, m)
+        FOR (j, 1, n)
+            FOR (k, 1, p)
+                dp[i][j][k] = (s1[i-1] == s2[j-1] && s2[j-1] == s3[k-1]) ? dp[i-1][j-1][k-1] + 1 : max(dp[i-1][j][k], max(dp[i][j-1][k], dp[i][j][k-1]));
+    cout << dp[m][n][p] << endl;
 }
 void solution () {
-    cin >> a >> b;
-    ll cou = 0;
-    FOR (i, a, b)
-        if (dp[i] > i)  ++cou; 
-    cout << cou << endl;
+    cin >> m >> n >> p >> s1 >> s2 >> s3;
+    dynamicProgram();
 }
 int main () {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
     cout.tie(NULL);
-    sieve();
-    solution();
+    tester()    solution();
     return 0;
 }

@@ -13,25 +13,28 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-int a, b; 
-vector<ll> dp (1e6 + 5, 0);
-void sieve () {
-    for (int i = 1; i <= 1e6; i++)
-        for (int j = i*2; j <= 1e6; j += i)
-            dp[j] += i;
-}
+vector<ll> dp;
+int n, k;
 void solution () {
-    cin >> a >> b;
-    ll cou = 0;
-    FOR (i, a, b)
-        if (dp[i] > i)  ++cou; 
-    cout << cou << endl;
+    cin >> n >> k;
+    dp.assign(1, 1);
+    ll s = 0;
+    int m = min (n, k);
+    FOR (i, 1, m) {
+        s += dp[i-1];
+        dp.push_back(s%mod);
+    }
+    FOR (i, m+1, n) {
+        s = s - dp[i-1-m] + dp[i-1];
+        dp.push_back(s%mod);
+    }
+    cout << dp[n] << endl;
 }
 int main () {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
     cout.tie(NULL);
-    sieve();
+    tester()
     solution();
     return 0;
 }
