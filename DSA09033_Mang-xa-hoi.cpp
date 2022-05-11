@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <iomanip>
 #include <utility>
-#include <queue>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
 #define tester()    int t; cin >> t; while (t--)
@@ -14,42 +13,36 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
-int n, m, res;
-vector<vector<int> > g;
-vector<int> vs;
+int n, m;
+vector<bool> vs;
+vector<vector<int>> g;
 void init () {
     cin >> n >> m;
+    vs.assign(n+1, false);
     g.clear(); g.resize(n+1);
-    int a, b;
-    while (m--) {
-        cin >> a >> b;
-        g[a].push_back(b), g[b].push_back(a);
+    int u, v;
+    FOR (i, 1, m) {
+        cin >> u >> v;
+        g[u].push_back(v);
+        g[v].push_back(u);
     }
-    res = 0;
-    vs.assign(n+1, 0);
 }
-void bfs (int s) {
-    int cou = 1;
-    vs[s] = 1;
-    queue<int> q;
-    q.push(s);
-    while (!q.empty()) {
-        int u = q.front(); q.pop();
-        for (auto v:g[u]) 
-            if (!vs[v]) {
-                vs[v] = 1;
-                ++cou;
-                q.push(v);
-            }
-    }
-    res = max (res, cou);
+void dfs (int u) {
+    vs[u] = true;
+    for (auto v:g[u])
+        if (!vs[v])
+            dfs(v);
+}
+bool check () {
+    FOR (i, 1, n)
+        if (!vs[i])
+            return false;
+    return true;
 }
 void solution () {
     init();
-    FOR (i, 1, n)
-        if (!vs[i])
-            bfs(i);
-    cout << res << endl;
+    dfs(1);
+    check() ? cout << "YES\n" : cout << "NO\n";
 }
 int main () {
     ios_base::sync_with_stdio(0);
