@@ -19,20 +19,24 @@ void solution () {
     cin >> s;
     stack<int> st;
     int res = 0, cou = 0;
-    FOR (i, 0, s.size()-1) {
-        if (s[i] == '(' || s[i] == '[')
-            st.push(i);
-        else if (s[i] == ')' && !st.empty() && s[st.top()] == '(')
+    FORD (i, s.size()-1, 0) {
+        if (!st.empty() && ((s[i] == '(' && s[st.top()] == ')') || (s[i] == '[' && s[st.top()] == ']')))
             st.pop();
-        else if (s[i] == ']' && !st.empty() && s[st.top()] == '[') {
-            ++cou;
-            res = max (res, cou);
-            st.pop();
-        }
-        else  {
-            cou = 0;
-            while (!st.empty()) st.pop();
-        }  
+        else    st.push(i);
+    }
+    vector<int> pos(1, -1);
+    while (!st.empty()) {
+        pos.push_back(st.top());
+        st.pop();
+    }
+    pos.push_back(s.size());
+    FOR (i, 1, pos.size()-1) {
+        cou = 0;
+        FOR (j, pos[i-1]+1, pos[i]-1)
+            if (s[j] == '[')   {
+                ++cou;
+                res = max (res, cou);
+            }
     }
     cout << res << endl;
 }

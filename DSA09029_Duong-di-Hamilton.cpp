@@ -17,56 +17,42 @@ int v, e;
 vector<vector<int> > g;
 vector<bool> vs;
 vector<int> path;
+bool check;
 void init () {
     cin >> v >> e;
     g.clear(); g.resize(100);
-    path.assign(v+1, 0);
+    path.assign(100, 0);
     int a, b;
     FOR (i, 1, e) {
         cin >> a >> b;
         g[a].push_back(b);
         g[b].push_back(a);
     }
-    vs.assign(v+5, false);
+    check = false;
 }
-void hamilton2 (int i, int pre) {
-    for (auto j:g[pre]) {
-        if (i == v+1)  {
-            cout << "1\n";
-            return;
-        }
-        else if (!vs[j]) {
-            vs[j] = true;
-            hamilton2(i+1, j);
-            vs[j] = false;
-        }
-    }
-}
-void solution () {
-    init();
-    vs[1] = true;
-    hamilton2(2, 1);
-}
-
 void hamilton(int i) {
-    int pre = path[i - 1];
-    for (int t : g[pre]) {
-        if (i == v + 1 and t == 1) {
-            cout << "1\n" << endl;
-        } else if (!vs[t]) {
-            vs[t] = true;
-            path[i] = t;
-            hamilton(i + 1);
-            vs[t] = false;
-        }
-    }
+    if (i == v)   
+        check = true;
+    else 
+        for (auto j:g[path[i-1]]) 
+            if (!vs[j]) {
+                path[i] = j;
+                vs[j] = true;
+                hamilton(i+1);
+                vs[j] = false;
+            }
 }
 
 void solve() {
     init();
-    path[1] = 1;
-    vs[1] = true;
-    hamilton(2);
+    FOR (i, 1, v) {
+        vs.assign(100, false);
+        vs[i] = true;
+        path[0] = i;
+        hamilton (1);
+        if (check)  break;
+    } 
+    cout << check << endl;
 }
 int main () {
     ios_base::sync_with_stdio(0);

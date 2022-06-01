@@ -5,9 +5,8 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
-#include <utility>
 #include <bitset>
-#include <queue>
+#include <utility>
 #define FOR(i,a,b) for(int i=a;i<=b;++i)
 #define FORD(i,a,b) for(int i=a;i>=b;--i)
 #define tester()    int t; cin >> t; while (t--)
@@ -16,68 +15,50 @@ typedef long long ll;
 typedef double db;
 const long long mod = 1e9 + 7;
 int n;
-vector<vector<string> > a;
+string a[105][105], dp[105][105];
 void init () {
     cin >> n;
-    a.assign(n+1, vector<string>(n+1, "0"));
     FOR (i, 0, n-1)
         FOR (j, 0, n-1)
             cin >> a[i][j];
 }
-
+int binToDec (string s) {
+    int res = 0;
+    for (char i:s) 
+        res = res * 2 + (i-'0');
+    return res;
+}
 void binToHex (string s) {
-    bitset<200> set(s);
-    cout << hex << set.to_ullong() << endl;
-}
-void binToHex2 (string s) {
+    int num = binToDec(s);
     string res = "";
-    char bin[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-    while (s.size() % 4 != 0)
-        s = "0" + s;
-    for (int i = 0; i < s.size(); i += 4) {
-        string temp = s.substr(i, 4);
-        res += bin[stoi(temp, 0, 2)];
+    while (num > 0) {
+        int mod = num % 16;
+        res += (mod < 10) ? (char)(mod + '0') : (char)(mod - 10 + 'A');
+        num /= 16;
     }
-    cout << res << endl;
+    reverse(res.begin(), res.end());
+    cout << res;
 }
-struct data {
-    int i, j;
-    string trace;
-};
 void solve () {
-    string res = "";
-    queue<data> q;
-    q.push({0, 0, a[0][0]});
-    while (!q.empty()) {
-        int r = q.front().i, c = q.front().j;
-        string s = q.front().trace;
-        q.pop();
-        if (r == n-1 && c == n-1) {
-            res = max(res, s);
-        }
-        else if (r < n && c < n)
-            if (a[r+1][c] != a[r][c+1]) {
-                while (!q.empty())    q.pop();
-                if (a[r+1][c] == "1") {
-                    q.push({r+1, c, s + a[r+1][c]});
-                }
-                else if (a[r][c+1] == "1") {
-                    q.push({r, c+1, s + a[r][c+1]});
-                }
-            }
-            else {
-                if (r+1 < n)
-                    q.push({r+1, c, s + a[r+1][c]});
-                if (c+1 < n)
-                    q.push({r, c+1, s + a[r][c+1]});
-            }
-        
+    dp[0][0] += a[0][0];
+    FOR (i, 1, n-1) {
+        dp[0][i] = dp[0][i-1] + a[0][i];
+        dp[i][0] = dp[i-1][0] + a[i][0];
     }
-    binToHex2(res);
+    FOR (i, 1, n-1)
+        FOR (j, 1, n-1)
+            dp[i][j] = max (dp[i][j-1], dp[i-1][j]) + a[i][j];
+    string s = dp[n-1][n-1];
+    while (s.size()%4 != 0) s = "0" + s;
+    for (int i = 0; i < s.size(); i+=4) {
+        string tmp = s.substr(i, 4);
+        binToHex(tmp);
+    }
 }
 void solution () {
     init();
     solve();
+    
 }
 int main () {
     ios_base::sync_with_stdio(0);
@@ -86,24 +67,3 @@ int main () {
     solution();
     return 0;
 }
-/*
-void solve () {
-    string res = "";
-    queue<data> q;
-    q.push({0, 0, a[0][0]});
-    while (!q.empty()) {
-        int r = q.front().i, c = q.front().j;
-        string s = q.front().trace;
-        q.pop();
-        if (r == n-1 && c == n-1) {
-            res = max(res, s);
-        }
-        if (r+1 < n)
-            q.push({r+1, c, s + a[r+1][c]});
-        if (c+1 < n)
-            q.push({r, c+1, s + a[r][c+1]});
-        
-    }
-    convert(res);
-}
-*/
